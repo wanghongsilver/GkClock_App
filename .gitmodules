@@ -1,0 +1,3 @@
+[submodule "components/ESP8266_RTOS_SDK"]
+	path = components/ESP8266_RTOS_SDK
+	url = https://github.com/espressif/ESP8266_RTOS_SDK.git
