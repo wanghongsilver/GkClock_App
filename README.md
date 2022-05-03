@@ -8,6 +8,11 @@
 
 # 开发环境搭建
 
+## 仓库其他组件拉取
+
+* 更新子模块：`/GkClock_App$ git submodule update --init --recursive`
+* 添加子模块：`/GkClock_App$ git submodule add -b <branch> <repository> [<path>`
+
 ## Windows开发环境
 
 ### 下载资源
@@ -48,11 +53,15 @@ export IDF_PATH="F:/study_line/8-2022/02-LongMarchPlan/02-Clock/program/GkClock_
 
 ### 步骤
 
-* 安装ubuntu环境：`sudo apt-get install git wget flex bison gperf python3 python3-pip python3-setuptools cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0`
-* 运行toolpath脚本：`source setenv.sh 
-* 
+* 进入SDK目录：`cd GkClock_App/components/ESP8266_RTOS_SDK`
+* 运行SDK环境安装脚本：`GkClock_App/components/ESP8266_RTOS_SDK$ ./install.sh`
+* 运行环境变量导出脚本：`GkClock_App/components/ESP8266_RTOS_SDK$ source export.sh`
+* 进入项目源码目录：`GkClock_App/components/ESP8266_RTOS_SDK$ cd ../../app/`
+* 根据需要执行下章节编译固件相关操作
 
 # 编译固件
+
+注：新的工程编译前使用`make menuconfig`设置串口
 
 * 配置项目：`make menuconfig`
 * 编译固件：`make all`
