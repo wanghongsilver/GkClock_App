@@ -139,7 +139,7 @@ void OLED_Clear(void)
 //y:0~63
 //mode:0,反白显示;1,正常显示
 //size:选择字体 16/12
-void OLED_ShowChar(u8 x,u8 y,u8 chr)
+void OLED_ShowChar(u8 x,u8 y,char chr)
 {
 	unsigned char c=0,i=0;
 		c=chr-' ';//得到偏移后的值
@@ -193,7 +193,7 @@ void OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size)
 	}
 }
 //显示一个字符号串
-void OLED_ShowString(u8 x,u8 y,u8 *chr)
+void OLED_ShowString(u8 x,u8 y,char *chr)
 {
 	unsigned char j=0;
 	while (chr[j]!='\0')
@@ -238,27 +238,20 @@ void OLED_DrawBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned 
 	}
 }
 
-
+void OLED_Bsp_Init(void)
+{
+    gpio_config_t io_conf;
+    io_conf.intr_type = GPIO_INTR_DISABLE;
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    io_conf.pin_bit_mask = GPIO_Pin_0 | GPIO_Pin_2 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
+    io_conf.pull_down_en = 0;
+    io_conf.pull_up_en = 1;
+    gpio_config(&io_conf);
+}
 //初始化SSD1306
 void OLED_Init(void)
 {
-	// WRITE_PERI_REG(PERIPHS_IO_MUX, 0x105);
-
-	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO0_U, FUNC_GPIO0);
-	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_GPIO2);
-	WRITE_PERI_REG(PERIPHS_IO_MUX, 0x105);
-	PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTCK_U, FUNC_GPIO13);
-	PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTMS_U, FUNC_GPIO14);
-	PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDO_U, FUNC_GPIO15);
-	// GPIO_AS_OUTPUT(GPIO_Pin_0 | GPIO_Pin_2 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15);
-	GPIO_AS_OUTPUT(GPIO_Pin_0);
-	GPIO_AS_OUTPUT(GPIO_Pin_2);
-	GPIO_AS_OUTPUT(GPIO_Pin_13);
-	GPIO_AS_OUTPUT(GPIO_Pin_14);
-	GPIO_AS_OUTPUT(GPIO_Pin_15);
-
-
-
+    OLED_Bsp_Init();
 	OLED_SCLK_Set();
 	OLED_SDIN_Set();
 	OLED_RST_Set();

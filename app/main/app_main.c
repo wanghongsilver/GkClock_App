@@ -22,7 +22,7 @@
 #include "driver/gpio.h"
 #include "driver/spi.h"
 
-// #include "oled.h"
+#include "oled.h"
 
 static const char *TAG = "spi_oled";
 
@@ -156,50 +156,98 @@ static void IRAM_ATTR spi_event_callback(int event, void *arg)
     }
 }
 
-void app_main(void)
+
+
+// void app_main(void)
+// {
+//     uint8_t x = 0;
+
+//     ESP_LOGI(TAG, "init gpio");
+//     gpio_config_t io_conf;
+//     io_conf.intr_type = GPIO_INTR_DISABLE;
+//     io_conf.mode = GPIO_MODE_OUTPUT;
+//     io_conf.pin_bit_mask = OLED_PIN_SEL;
+//     io_conf.pull_down_en = 0;
+//     io_conf.pull_up_en = 1;
+//     gpio_config(&io_conf);
+
+//     ESP_LOGI(TAG, "init hspi");
+//     spi_config_t spi_config;
+//     // Load default interface parameters
+//     // CS_EN:1, MISO_EN:1, MOSI_EN:1, BYTE_TX_ORDER:1, BYTE_TX_ORDER:1, BIT_RX_ORDER:0, BIT_TX_ORDER:0, CPHA:0, CPOL:0
+//     spi_config.interface.val = SPI_DEFAULT_INTERFACE;
+//     // Load default interrupt enable
+//     // TRANS_DONE: true, WRITE_STATUS: false, READ_STATUS: false, WRITE_BUFFER: false, READ_BUFFER: false
+//     spi_config.intr_enable.val = SPI_MASTER_DEFAULT_INTR_ENABLE;
+//     // Cancel hardware cs
+//     spi_config.interface.cs_en = 0;
+//     // MISO pin is used for DC
+//     spi_config.interface.miso_en = 0;
+//     // CPOL: 1, CPHA: 1
+//     spi_config.interface.cpol = 1;
+//     spi_config.interface.cpha = 1;
+//     // Set SPI to master mode
+//     // 8266 Only support half-duplex
+//     spi_config.mode = SPI_MASTER_MODE;
+//     // Set the SPI clock frequency division factor
+//     spi_config.clk_div = SPI_10MHz_DIV;
+//     // Register SPI event callback function
+//     spi_config.event_cb = spi_event_callback;
+//     spi_init(HSPI_HOST, &spi_config);
+
+//     ESP_LOGI(TAG, "init oled");
+//     oled_init();
+//     oled_clear(0x00);
+
+//     while (1) {
+//         oled_clear(x);
+//         oled_delay_ms(1000);
+//         x++;
+//     }
+// }
+
+void oled_0in96_init(void)
 {
-    uint8_t x = 0;
+    OLED_Bsp_Init();
+    OLED_Init(); //初始化OLED
+    OLED_Display_On();
+    OLED_Clear();
+    //	LED_ON;
+    OLED_ShowCHinese(0, 0, 0);   //中
+    OLED_ShowCHinese(18, 0, 1);  //景
+    OLED_ShowCHinese(36, 0, 2);  //园
+    OLED_ShowCHinese(54, 0, 3);  //电
+    OLED_ShowCHinese(72, 0, 4);  //子
+    OLED_ShowCHinese(90, 0, 5);  //科
+    OLED_ShowCHinese(108, 0, 6); //技
+    OLED_ShowString(0, 3, "1.3' OLED TEST");
+    // OLED_ShowString(8,2,"ZHONGJINGYUAN");
+    //	OLED_ShowString(20,4,"2014/05/01");
 
+}
+
+void oled_oin96_freshtest(void)
+{
+    static char t=' ';
+    OLED_Clear();
+    OLED_ShowString(0, 6, "ASCII:");
+    OLED_ShowString(63, 6, "CODE:");
+    OLED_ShowChar(48, 6, t); //显示ASCII字符
+    t++;
+    if (t > '~')
+        t = ' ';
+    OLED_ShowNum(103, 6, t, 3, 16); //显示ASCII字符的码值
+}
+
+void app_main()
+{
     ESP_LOGI(TAG, "init gpio");
-    gpio_config_t io_conf;
-    io_conf.intr_type = GPIO_INTR_DISABLE;
-    io_conf.mode = GPIO_MODE_OUTPUT;
-    io_conf.pin_bit_mask = OLED_PIN_SEL;
-    io_conf.pull_down_en = 0;
-    io_conf.pull_up_en = 1;
-    gpio_config(&io_conf);
+    oled_0in96_init();
 
-    ESP_LOGI(TAG, "init hspi");
-    spi_config_t spi_config;
-    // Load default interface parameters
-    // CS_EN:1, MISO_EN:1, MOSI_EN:1, BYTE_TX_ORDER:1, BYTE_TX_ORDER:1, BIT_RX_ORDER:0, BIT_TX_ORDER:0, CPHA:0, CPOL:0
-    spi_config.interface.val = SPI_DEFAULT_INTERFACE;
-    // Load default interrupt enable
-    // TRANS_DONE: true, WRITE_STATUS: false, READ_STATUS: false, WRITE_BUFFER: false, READ_BUFFER: false
-    spi_config.intr_enable.val = SPI_MASTER_DEFAULT_INTR_ENABLE;
-    // Cancel hardware cs
-    spi_config.interface.cs_en = 0;
-    // MISO pin is used for DC
-    spi_config.interface.miso_en = 0;
-    // CPOL: 1, CPHA: 1
-    spi_config.interface.cpol = 1;
-    spi_config.interface.cpha = 1;
-    // Set SPI to master mode
-    // 8266 Only support half-duplex
-    spi_config.mode = SPI_MASTER_MODE;
-    // Set the SPI clock frequency division factor
-    spi_config.clk_div = SPI_10MHz_DIV;
-    // Register SPI event callback function
-    spi_config.event_cb = spi_event_callback;
-    spi_init(HSPI_HOST, &spi_config);
-
-    ESP_LOGI(TAG, "init oled");
-    oled_init();
-    oled_clear(0x00);
-
-    while (1) {
-        oled_clear(x);
-        oled_delay_ms(1000);
-        x++;
+    while (1)
+    {
+        oled_oin96_freshtest();
+        /*delay 1s*/
+        vTaskDelay(1000);
     }
 }

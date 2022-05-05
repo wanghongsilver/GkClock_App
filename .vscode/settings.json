@@ -3,6 +3,8 @@
     "idf.customAdapterTargetName": "esp8266",
     "files.associations": {
         "oledb.h": "c",
-        "gpio.h": "c"
+        "gpio.h": "c",
+        "task.h": "c",
+        "oled.h": "c"
     }
 }

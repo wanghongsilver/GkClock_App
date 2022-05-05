@@ -105,3 +105,15 @@ make: *** No rule to make target 'check_python_dependencies', needed by 'all'.  
 在vscode 中将文件格式由CRLF修改为LF
 ```
 
+## Linux 串口打开失败
+
+```
+### ERROR LOG
+File "/home/wh/.espressif/python_env/rtos3.4_py2.7_env/lib/python2.7/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 13] could not open port /dev/ttyUSB0: [Errno 13] Permission denied: '/dev/ttyUSB0'
+
+### 解决办法：给串口增加权限
+$ sudo chmod -R 777 /dev/ttyUSB0
+```
+
