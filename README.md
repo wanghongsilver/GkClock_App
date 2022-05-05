@@ -63,15 +63,15 @@ export IDF_PATH="F:/study_line/8-2022/02-LongMarchPlan/02-Clock/program/GkClock_
 
 注：新的工程编译前使用`make menuconfig`设置串口
 
-* 配置项目：`make menuconfig`
-* 编译固件：`make all`
-* 烧写固件：`make flash`
-* 查看串口输出：`make monitor`
-* 编译并烧写固件：`make flash`
-* 编译、烧写固件并打开串口助手：`make flash monitor`
-* 只编译烧写APP：`make app-flash`
-* 编译、烧写App并打开串口助手：`make app-flash monitor`
-* 并行编译烧写：`make -j5 app-flash monitor`
+* 配置项目：`idf.py menuconfig`
+* 编译固件：`idf.py all`
+* 烧写固件：`idf.py flash`
+* 查看串口输出：`idf.py monitor`
+* 编译并烧写固件：`idf.py flash`
+* 编译、烧写固件并打开串口助手：`idf.py flash monitor`
+* 只编译烧写APP：`idf.py app-flash`
+* 编译、烧写App并打开串口助手：`idf.py app-flash monitor`
+* 并行编译烧写：`idf.py -j5 app-flash monitor`
 
 # QA
 
@@ -95,7 +95,7 @@ $ python -m pip install --user -r $IDF_PATH/requirements.txt
 
 ## 文件格式错误
 
-```
+```shell
 ### ERROR LOG
 $ make all
 /usr/bin/env: ‘python\r’: No such file or directory
@@ -107,7 +107,7 @@ make: *** No rule to make target 'check_python_dependencies', needed by 'all'.  
 
 ## Linux 串口打开失败
 
-```
+```shell
 ### ERROR LOG
 File "/home/wh/.espressif/python_env/rtos3.4_py2.7_env/lib/python2.7/site-packages/serial/serialposix.py", line 325, in open
     raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
@@ -115,5 +115,16 @@ serial.serialutil.SerialException: [Errno 13] could not open port /dev/ttyUSB0: 
 
 ### 解决办法：给串口增加权限
 $ sudo chmod -R 777 /dev/ttyUSB0
+```
+
+## idf.py menuconfig 无法找到curses.h
+
+```
+### ERROR LOG
+$ idf.py menuconfig
+<command-line>:0:12: fatal error: curses.h: No such file or directory
+
+### 解决办法 安装libncurses5-dev库
+$ sudo apt-get install libncurses5-dev
 ```
 

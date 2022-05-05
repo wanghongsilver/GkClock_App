@@ -3,6 +3,7 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := GKClock
+PROJECT_NAME := softap_prov
 
 include $(IDF_PATH)/make/project.mk
+
