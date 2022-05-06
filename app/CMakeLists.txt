@@ -6,9 +6,3 @@ set(EXTRA_COMPONENT_DIRS "custom_drivers")
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(GKClock)
-
-# set(EXTRA_COMPONENT_DIRS "./drivers/ePaper")
-# set(EXTRA_COMPONENT_DIRS "./drivers/gy_paj7620")
-# set(EXTRA_COMPONENT_DIRS "./drivers/oleds")
-
-
