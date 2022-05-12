@@ -24,6 +24,8 @@
 
 #include "oled.h"
 
+#include "app_sensor.h"
+
 static const char *TAG = "spi_oled";
 
 #define OLED_CS_GPIO     2
@@ -162,46 +164,49 @@ void app_main(void)
 {
     uint8_t x = 0;
 
-    ESP_LOGI(TAG, "init gpio");
-    gpio_config_t io_conf;
-    io_conf.intr_type = GPIO_INTR_DISABLE;
-    io_conf.mode = GPIO_MODE_OUTPUT;
-    io_conf.pin_bit_mask = OLED_PIN_SEL;
-    io_conf.pull_down_en = 0;
-    io_conf.pull_up_en = 1;
-    gpio_config(&io_conf);
+    // ESP_LOGI(TAG, "init gpio");
+    // gpio_config_t io_conf;
+    // io_conf.intr_type = GPIO_INTR_DISABLE;
+    // io_conf.mode = GPIO_MODE_OUTPUT;
+    // io_conf.pin_bit_mask = OLED_PIN_SEL;
+    // io_conf.pull_down_en = 0;
+    // io_conf.pull_up_en = 1;
+    // gpio_config(&io_conf);
 
-    ESP_LOGI(TAG, "init hspi");
-    spi_config_t spi_config;
-    // Load default interface parameters
-    // CS_EN:1, MISO_EN:1, MOSI_EN:1, BYTE_TX_ORDER:1, BYTE_TX_ORDER:1, BIT_RX_ORDER:0, BIT_TX_ORDER:0, CPHA:0, CPOL:0
-    spi_config.interface.val = SPI_DEFAULT_INTERFACE;
-    // Load default interrupt enable
-    // TRANS_DONE: true, WRITE_STATUS: false, READ_STATUS: false, WRITE_BUFFER: false, READ_BUFFER: false
-    spi_config.intr_enable.val = SPI_MASTER_DEFAULT_INTR_ENABLE;
-    // Cancel hardware cs
-    spi_config.interface.cs_en = 0;
-    // MISO pin is used for DC
-    spi_config.interface.miso_en = 0;
-    // CPOL: 1, CPHA: 1
-    spi_config.interface.cpol = 1;
-    spi_config.interface.cpha = 1;
-    // Set SPI to master mode
-    // 8266 Only support half-duplex
-    spi_config.mode = SPI_MASTER_MODE;
-    // Set the SPI clock frequency division factor
-    spi_config.clk_div = SPI_10MHz_DIV;
-    // Register SPI event callback function
-    spi_config.event_cb = spi_event_callback;
-    spi_init(HSPI_HOST, &spi_config);
+    // ESP_LOGI(TAG, "init hspi");
+    // spi_config_t spi_config;
+    // // Load default interface parameters
+    // // CS_EN:1, MISO_EN:1, MOSI_EN:1, BYTE_TX_ORDER:1, BYTE_TX_ORDER:1, BIT_RX_ORDER:0, BIT_TX_ORDER:0, CPHA:0, CPOL:0
+    // spi_config.interface.val = SPI_DEFAULT_INTERFACE;
+    // // Load default interrupt enable
+    // // TRANS_DONE: true, WRITE_STATUS: false, READ_STATUS: false, WRITE_BUFFER: false, READ_BUFFER: false
+    // spi_config.intr_enable.val = SPI_MASTER_DEFAULT_INTR_ENABLE;
+    // // Cancel hardware cs
+    // spi_config.interface.cs_en = 0;
+    // // MISO pin is used for DC
+    // spi_config.interface.miso_en = 0;
+    // // CPOL: 1, CPHA: 1
+    // spi_config.interface.cpol = 1;
+    // spi_config.interface.cpha = 1;
+    // // Set SPI to master mode
+    // // 8266 Only support half-duplex
+    // spi_config.mode = SPI_MASTER_MODE;
+    // // Set the SPI clock frequency division factor
+    // spi_config.clk_div = SPI_10MHz_DIV;
+    // // Register SPI event callback function
+    // spi_config.event_cb = spi_event_callback;
+    // spi_init(HSPI_HOST, &spi_config);
 
-    ESP_LOGI(TAG, "init oled");
-    oled_init();
-    oled_clear(0x00);
+    // ESP_LOGI(TAG, "init oled");
+    // oled_init();
+    // oled_clear(0x00);
+
+    ESP_LOGI(TAG, "init sensor task");
+    sensor_task_init();
 
     while (1) {
-        ESP_LOGI(TAG, "oled: %d",x);
-        oled_clear(x);
+        // ESP_LOGI(TAG, "oled: %d",x);
+        // oled_clear(x);
         oled_delay_ms(1000);
         x++;
     }
